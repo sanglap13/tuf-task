@@ -37,26 +37,46 @@ const BannerForm: React.FC<BannerFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!image && !banner) {
+    if (!banner && !image) {
       alert("Please select an image.");
       return;
     }
 
     const formData = new FormData();
-    if (image) formData.append("bannerImage", image);
+    if (image) {
+      formData.append("bannerImage", image);
+    }
     formData.append("description", description);
     formData.append("link", link);
     formData.append("timer", timer.toString());
     formData.append("visibility", visibility.toString());
-    if (banner) formData.append("id", banner.id?.toString()!);
+    if (banner) {
+      if (banner.id) {
+        formData.append("id", banner.id.toString());
+      } else {
+        alert("Banner ID is required for update");
+        return;
+      }
+    }
 
     setIsUploading(true);
 
     try {
       if (banner) {
-        // Update existing banner
-        await (onUpdate &&
-          onUpdate({ ...banner, description, link, timer, visibility }));
+        if (image) {
+          // Update existing banner with new image
+          await (onUpload && onUpload(formData));
+        } else {
+          // Update existing banner without new image
+          await (onUpdate &&
+            onUpdate({
+              ...banner,
+              description,
+              link,
+              timer,
+              visibility,
+            }));
+        }
       } else {
         // Upload new banner
         await (onUpload && onUpload(formData));
@@ -81,7 +101,7 @@ const BannerForm: React.FC<BannerFormProps> = ({
           accept="image/*"
           onChange={handleImageChange}
           className="mt-1 block w-full"
-          disabled={!!banner} // Disable image upload if editing
+          disabled={!!banner && !image} // Disable image upload if editing without new image
         />
       </div>
       <div>

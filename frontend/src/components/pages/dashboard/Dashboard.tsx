@@ -15,16 +15,23 @@ const Dashboard: React.FC = () => {
 
   const handleBannerUpdate = async (updatedBanner: IBanner) => {
     try {
-      // Prepare data for update
-      const bannerData = {
-        description: updatedBanner.description,
-        visibility: updatedBanner.visibility,
-        timer: updatedBanner.timer,
-        link: updatedBanner.link,
-        imageUrl: updatedBanner.imageUrl,
-      };
+      const formData = new FormData();
 
-      await updateBanner(String(updatedBanner.id), bannerData);
+      // Conditionally add imageUrl if it exists
+      if (updatedBanner.imageUrl) {
+        formData.append("imageUrl", updatedBanner.imageUrl);
+      }
+
+      // Always append these values since they should be present
+      formData.append("description", updatedBanner.description || "");
+      formData.append(
+        "visibility",
+        updatedBanner.visibility ? "true" : "false"
+      );
+      formData.append("timer", (updatedBanner.timer || 6).toString()); // Default to 6 if undefined
+      formData.append("link", updatedBanner.link || "");
+
+      await updateBanner(String(updatedBanner.id), formData);
       setBanners((prev) =>
         prev.map((banner) =>
           banner.id === updatedBanner.id ? updatedBanner : banner

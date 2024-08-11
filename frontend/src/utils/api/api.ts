@@ -1,5 +1,4 @@
 import axios from "axios";
-import { IBanner } from "../../@types/hero.types";
 
 const API_URL = `${import.meta.env.VITE_BACKEND}/api/v1`;
 
@@ -30,11 +29,11 @@ export const createBanner = async (formData: FormData) => {
 };
 
 // Update an existing banner
-export const updateBanner = async (id: string, bannerData: IBanner) => {
+export const updateBanner = async (id: string, formData: FormData) => {
   try {
-    const response = await axios.put(`${API_URL}/banner/${id}`, bannerData, {
+    const response = await axios.put(`${API_URL}/banner/${id}`, formData, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

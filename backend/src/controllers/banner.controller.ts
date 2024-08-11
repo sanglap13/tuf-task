@@ -43,7 +43,7 @@ export const createBanner = async (req: Request, res: Response) => {
 export const updateBanner = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { description, visibility, timer, link } = req.body;
-  const imageUrl = req.file?.path;
+  const imageUrl = req.file?.path || req.body.imageUrl;
 
   if (!imageUrl) {
     return res.status(400).json({ error: "Image file is required" });
