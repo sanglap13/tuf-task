@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import BannerModel from "../models/banner.model";
 
-// Controller to get all banners
 export const getBanner = async (req: Request, res: Response) => {
   try {
     const banners = await BannerModel.findAll();
@@ -15,7 +14,6 @@ export const getBanner = async (req: Request, res: Response) => {
   }
 };
 
-// Controller to create a new banner
 export const createBanner = async (req: Request, res: Response) => {
   const { description, visibility, timer, link } = req.body;
   const imageUrl = req.file?.path;
@@ -39,7 +37,6 @@ export const createBanner = async (req: Request, res: Response) => {
   }
 };
 
-// Controller to update an existing banner by ID
 export const updateBanner = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { description, visibility, timer, link } = req.body;

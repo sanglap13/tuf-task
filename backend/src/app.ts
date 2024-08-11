@@ -22,7 +22,7 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("Hello Bois!");
 });
 
 // Routes
