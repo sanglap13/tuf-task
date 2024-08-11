@@ -10,12 +10,7 @@ const Navbar: React.FC = () => {
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <a href="/" className="hover:underline">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="/banners" className="hover:underline">
+              <a href="/dashboard" className="hover:underline">
                 Dashboard
               </a>
             </li>
