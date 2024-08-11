@@ -7,7 +7,7 @@ import Popular from "./popular/Popular";
 import { getBanners } from "../../../utils/api/api";
 
 const Home: React.FC = () => {
-  const [banners, setBanners] = useState<IBanner[]>([]);
+  const [, setBanners] = useState<IBanner[]>([]);
   const [visibleBanners, setVisibleBanners] = useState<IBanner[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [timer, setTimer] = useState<number>(0);
