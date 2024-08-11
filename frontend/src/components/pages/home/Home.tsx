@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getBanner } from "../../../utils/api/api";
+import { IBanner } from "../../../@types/banner.types";
 
 const Home: React.FC = () => {
-  const [banners, setBanners] = useState<any[]>([]);
+  const [banners, setBanners] = useState<IBanner[]>([]);
+  const [visibleBanners, setVisibleBanners] = useState<IBanner[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [timer, setTimer] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -11,9 +13,14 @@ const Home: React.FC = () => {
     try {
       const data = await getBanner();
       console.log(data, "data");
+
+      // Filter banners based on visibility
+      const visible = data.filter((banner: IBanner) => banner.visibility);
+
       setBanners(data);
+      setVisibleBanners(visible);
       setIsLoading(false);
-      setTimer(data.length > 0 ? data[0].timer : 0);
+      setTimer(visible.length > 0 ? visible[0].timer : 0);
     } catch (error) {
       console.error("Failed to load banners", error);
       setIsLoading(false);
@@ -31,18 +38,20 @@ const Home: React.FC = () => {
       }, 1000);
 
       return () => clearInterval(countdown);
-    } else if (banners.length > 0) {
-      setCurrentIndex((prev) => (prev + 1) % banners.length);
-      setTimer(banners[(currentIndex + 1) % banners.length]?.timer || 0);
+    } else if (visibleBanners.length > 0) {
+      setCurrentIndex((prev) => (prev + 1) % visibleBanners.length);
+      setTimer(
+        visibleBanners[(currentIndex + 1) % visibleBanners.length]?.timer || 0
+      );
     }
-  }, [timer, currentIndex, banners]);
+  }, [timer, currentIndex, visibleBanners]);
 
   if (isLoading) return <div className="text-center text-lg">Loading...</div>;
 
-  if (banners.length === 0)
+  if (visibleBanners.length === 0)
     return <div className="text-center text-lg">No Banner Available</div>;
 
-  const { imageUrl, description } = banners[currentIndex] || {};
+  const { imageUrl, description } = visibleBanners[currentIndex] || {};
 
   return (
     <div className="relative w-full h-[400px] bg-gray-200 overflow-hidden">
