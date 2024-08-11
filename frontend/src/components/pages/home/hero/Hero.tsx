@@ -13,11 +13,17 @@ const Hero: React.FC<IHeroProps> = ({
       {visibleBanners.length > 0 && (
         <div className="relative w-full h-[400px] bg-gray-200 overflow-hidden">
           {imageUrl && (
-            <img
-              src={`${import.meta.env.VITE_BACKEND}/${imageUrl}`}
-              alt={description}
-              className="w-full h-full object-cover"
-            />
+            <a
+              href={visibleBanners[currentIndex].link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={`${import.meta.env.VITE_BACKEND}/${imageUrl}`}
+                alt={description}
+                className="w-full h-full object-cover"
+              />
+            </a>
           )}
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white flex justify-between items-center">
             <p className="text-xl">{description}</p>
