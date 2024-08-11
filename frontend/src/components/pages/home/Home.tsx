@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { IBanner } from "../../../@types/hero.types";
-import { getBanner } from "../../../utils/api/api";
+
 import Hero from "./hero/Hero";
 import Highlights from "./highlights/Highlights";
 import Popular from "./popular/Popular";
+import { getBanners } from "../../../utils/api/api";
 
 const Home: React.FC = () => {
   const [banners, setBanners] = useState<IBanner[]>([]);
@@ -14,7 +15,7 @@ const Home: React.FC = () => {
 
   const loadBanners = async () => {
     try {
-      const data = await getBanner();
+      const data = await getBanners();
       const visible = data.filter((banner: IBanner) => banner.visibility);
       setBanners(data);
       setVisibleBanners(visible);

@@ -1,9 +1,10 @@
 export interface IBanner {
-  id: number;
+  id?: number;
   imageUrl: string;
   description: string;
   timer: number;
   visibility: boolean;
+  link?: string;
 }
 
 export interface IHeroProps {

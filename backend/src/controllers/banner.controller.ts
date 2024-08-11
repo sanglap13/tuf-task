@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import BannerModel from "../models/banner.model";
 
+// Controller to get all banners
 export const getBanner = async (req: Request, res: Response) => {
   try {
     const banners = await BannerModel.findAll();
@@ -14,8 +15,9 @@ export const getBanner = async (req: Request, res: Response) => {
   }
 };
 
-export const updateBanner = async (req: Request, res: Response) => {
-  const { id, description, visibility, timer, link } = req.body;
+// Controller to create a new banner
+export const createBanner = async (req: Request, res: Response) => {
+  const { description, visibility, timer, link } = req.body;
   const imageUrl = req.file?.path;
 
   if (!imageUrl) {
@@ -23,25 +25,37 @@ export const updateBanner = async (req: Request, res: Response) => {
   }
 
   try {
-    if (id) {
-      // Update existing banner
-      const banner = await BannerModel.findByPk(id);
-      if (banner) {
-        await banner.update({ description, visibility, timer, link, imageUrl });
-        res.status(200).json({ message: "Banner updated successfully" });
-      } else {
-        res.status(404).json({ message: "Banner not found" });
-      }
+    await BannerModel.create({
+      description,
+      visibility,
+      timer,
+      link,
+      imageUrl,
+    });
+    res.status(201).json({ message: "Banner created successfully" });
+  } catch (err) {
+    console.error("Error creating banner:", err);
+    res.status(500).json({ error: "Failed to create banner" });
+  }
+};
+
+// Controller to update an existing banner by ID
+export const updateBanner = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { description, visibility, timer, link } = req.body;
+  const imageUrl = req.file?.path;
+
+  if (!imageUrl) {
+    return res.status(400).json({ error: "Image file is required" });
+  }
+
+  try {
+    const banner = await BannerModel.findByPk(id);
+    if (banner) {
+      await banner.update({ description, visibility, timer, link, imageUrl });
+      res.status(200).json({ message: "Banner updated successfully" });
     } else {
-      // Create new banner
-      await BannerModel.create({
-        description,
-        visibility,
-        timer,
-        link,
-        imageUrl,
-      });
-      res.status(201).json({ message: "Banner created successfully" });
+      res.status(404).json({ message: "Banner not found" });
     }
   } catch (err) {
     console.error("Error updating banner:", err);

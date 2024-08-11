@@ -1,13 +1,32 @@
-import React, { useState } from "react";
-import { uploadBanner } from "../../../../utils/api/api";
+import React, { useState, useEffect } from "react";
+import { IBanner } from "../../../../@types/hero.types";
 
-const BannerForm: React.FC = () => {
+interface BannerFormProps {
+  banner?: IBanner; // Optional banner prop for editing
+  onUpload?: (formData: FormData) => Promise<void>;
+  onUpdate?: (updatedBanner: IBanner) => Promise<void>;
+}
+
+const BannerForm: React.FC<BannerFormProps> = ({
+  banner,
+  onUpload,
+  onUpdate,
+}) => {
   const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState<string>("");
-  const [link, setLink] = useState<string>(""); // New link state
+  const [link, setLink] = useState<string>("");
   const [timer, setTimer] = useState<number>(6);
   const [visibility, setVisibility] = useState<boolean>(true);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (banner) {
+      setDescription(banner.description);
+      setLink(banner.link || "");
+      setTimer(banner.timer || 6);
+      setVisibility(banner.visibility || true);
+    }
+  }, [banner]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -18,27 +37,34 @@ const BannerForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!image) {
+    if (!image && !banner) {
       alert("Please select an image.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("bannerImage", image);
+    if (image) formData.append("bannerImage", image);
     formData.append("description", description);
-    formData.append("link", link); // Add link to form data
+    formData.append("link", link);
     formData.append("timer", timer.toString());
     formData.append("visibility", visibility.toString());
+    if (banner) formData.append("id", banner.id?.toString()!);
 
     setIsUploading(true);
 
     try {
-      const response = await uploadBanner(formData);
-      console.log("Banner uploaded:", response);
-      alert("Banner uploaded successfully!");
+      if (banner) {
+        // Update existing banner
+        await (onUpdate &&
+          onUpdate({ ...banner, description, link, timer, visibility }));
+      } else {
+        // Upload new banner
+        await (onUpload && onUpload(formData));
+      }
+      alert("Banner saved successfully!");
     } catch (error) {
-      console.error("Failed to upload banner", error);
-      alert("Failed to upload banner");
+      console.error("Failed to save banner", error);
+      alert("Failed to save banner");
     } finally {
       setIsUploading(false);
     }
@@ -55,6 +81,7 @@ const BannerForm: React.FC = () => {
           accept="image/*"
           onChange={handleImageChange}
           className="mt-1 block w-full"
+          disabled={!!banner} // Disable image upload if editing
         />
       </div>
       <div>
@@ -105,7 +132,11 @@ const BannerForm: React.FC = () => {
           className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
           disabled={isUploading}
         >
-          {isUploading ? "Uploading..." : "Upload Banner"}
+          {isUploading
+            ? "Saving..."
+            : banner
+            ? "Update Banner"
+            : "Upload Banner"}
         </button>
       </div>
     </form>
