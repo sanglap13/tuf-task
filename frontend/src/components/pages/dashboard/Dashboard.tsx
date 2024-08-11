@@ -19,18 +19,16 @@ const Dashboard: React.FC = () => {
     try {
       const formData = new FormData();
 
-      // Conditionally add imageUrl if it exists
       if (updatedBanner.imageUrl) {
         formData.append("imageUrl", updatedBanner.imageUrl);
       }
 
-      // Always append these values since they should be present
       formData.append("description", updatedBanner.description || "");
       formData.append(
         "visibility",
         updatedBanner.visibility ? "true" : "false"
       );
-      formData.append("timer", (updatedBanner.timer || 6).toString()); // Default to 6 if undefined
+      formData.append("timer", (updatedBanner.timer || 6).toString());
       formData.append("link", updatedBanner.link || "");
 
       await updateBanner(String(updatedBanner.id), formData);

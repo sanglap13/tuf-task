@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { IBanner } from "../../../../@types/hero.types";
+import { IBannerFormProps } from "../../../../@types/dashboard.types";
 
-interface BannerFormProps {
-  banner?: IBanner; // Optional banner prop for editing
-  onUpload?: (formData: FormData) => Promise<void>;
-  onUpdate?: (updatedBanner: IBanner) => Promise<void>;
-  onClose: () => void; // Added onClose prop
-}
-
-const BannerForm: React.FC<BannerFormProps> = ({
+const BannerForm: React.FC<IBannerFormProps> = ({
   banner,
   onUpload,
   onUpdate,
-  onClose, // Destructure onClose
+  onClose,
 }) => {
   const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState<string>("");
@@ -66,10 +59,8 @@ const BannerForm: React.FC<BannerFormProps> = ({
     try {
       if (banner) {
         if (image) {
-          // Update existing banner with new image
           await (onUpload && onUpload(formData));
         } else {
-          // Update existing banner without new image
           await (onUpdate &&
             onUpdate({
               ...banner,
@@ -80,11 +71,10 @@ const BannerForm: React.FC<BannerFormProps> = ({
             }));
         }
       } else {
-        // Upload new banner
         await (onUpload && onUpload(formData));
       }
       alert("Banner saved successfully!");
-      onClose(); // Close the modal after successful submission
+      onClose();
     } catch (error) {
       console.error("Failed to save banner", error);
       alert("Failed to save banner");
@@ -104,7 +94,7 @@ const BannerForm: React.FC<BannerFormProps> = ({
           accept="image/*"
           onChange={handleImageChange}
           className="mt-1 block w-full"
-          disabled={!!banner && !image} // Disable image upload if editing without new image
+          disabled={!!banner && !image}
         />
       </div>
       <div>

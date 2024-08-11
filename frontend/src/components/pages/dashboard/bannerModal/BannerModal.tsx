@@ -1,11 +1,7 @@
 import React from "react";
+import { IModalProps } from "../../../../@types/dashboard.types";
 
-interface ModalProps {
-  children: React.ReactNode;
-  onClose: () => void;
-}
-
-const BannerModal: React.FC<ModalProps> = ({ children, onClose }) => {
+const BannerModal: React.FC<IModalProps> = ({ children, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="relative bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
