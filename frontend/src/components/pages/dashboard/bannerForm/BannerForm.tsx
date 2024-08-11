@@ -5,12 +5,14 @@ interface BannerFormProps {
   banner?: IBanner; // Optional banner prop for editing
   onUpload?: (formData: FormData) => Promise<void>;
   onUpdate?: (updatedBanner: IBanner) => Promise<void>;
+  onClose: () => void; // Added onClose prop
 }
 
 const BannerForm: React.FC<BannerFormProps> = ({
   banner,
   onUpload,
   onUpdate,
+  onClose, // Destructure onClose
 }) => {
   const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState<string>("");
@@ -24,7 +26,7 @@ const BannerForm: React.FC<BannerFormProps> = ({
       setDescription(banner.description);
       setLink(banner.link || "");
       setTimer(banner.timer || 6);
-      setVisibility(banner.visibility ?? true); // Use nullish coalescing operator to handle undefined values
+      setVisibility(banner.visibility || true);
     }
   }, [banner]);
 
@@ -82,6 +84,7 @@ const BannerForm: React.FC<BannerFormProps> = ({
         await (onUpload && onUpload(formData));
       }
       alert("Banner saved successfully!");
+      onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error("Failed to save banner", error);
       alert("Failed to save banner");

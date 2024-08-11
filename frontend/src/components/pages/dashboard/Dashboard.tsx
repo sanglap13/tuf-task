@@ -83,20 +83,27 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
         {isEditing && selectedBanner && (
-          <BannerForm banner={selectedBanner} onUpdate={handleBannerUpdate} />
+          <BannerForm
+            banner={selectedBanner}
+            onUpdate={handleBannerUpdate}
+            onClose={() => setIsEditing(false)}
+          />
         )}
       </div>
       <div className="mt-10 text-center">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 mb-5"
+          className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
         >
           Upload New Banner
         </button>
       </div>
       {isModalOpen && (
         <BannerModal onClose={() => setIsModalOpen(false)}>
-          <BannerForm onUpload={createBanner} />
+          <BannerForm
+            onUpload={createBanner}
+            onClose={() => setIsModalOpen(false)}
+          />
         </BannerModal>
       )}
     </div>
