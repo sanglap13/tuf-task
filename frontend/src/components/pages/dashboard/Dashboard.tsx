@@ -93,7 +93,7 @@ const Dashboard: React.FC = () => {
       <div className="mt-10 text-center">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+          className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 mb-5"
         >
           Upload New Banner
         </button>
