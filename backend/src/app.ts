@@ -1,25 +1,28 @@
 import express from "express";
-import bodyParser from "body-parser";
-
 import bannerRoutes from "./routes/banner.routes";
 import sequelize from "./config/db";
-import dotenv from "dotenv";
+import { config } from "dotenv";
+import morgan from "morgan";
+import cors from "cors";
 
-dotenv.config();
+config({
+  path: "./.env",
+});
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Middleware
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(cors());
 
-// Routes
-app.use("/api/v1", bannerRoutes);
-
-// Root Route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
+
+// Routes
+app.use("/api/v1", bannerRoutes);
 
 // Database Sync
 sequelize
