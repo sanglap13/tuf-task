@@ -11,12 +11,16 @@ const BannerModel = sequelize.define("Banner", {
     defaultValue: true,
   },
   timer: {
-    type: DataTypes.INTEGER, // Time in seconds
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   link: {
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  imageUrl: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
 });
 
