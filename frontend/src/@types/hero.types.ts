@@ -7,5 +7,7 @@ export interface IBanner {
 }
 
 export interface IHeroProps {
-  banners: IBanner[];
+  visibleBanners: IBanner[];
+  timer: number;
+  currentIndex: number;
 }
