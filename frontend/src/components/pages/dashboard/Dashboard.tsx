@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { updateBanner, getBanners, createBanner } from "../../../utils/api/api";
 import { IBanner } from "../../../@types/hero.types";
 import BannerForm from "./bannerForm/BannerForm";
+import BannerModal from "./bannerModal/BannerModal";
 
 const Dashboard: React.FC = () => {
   const [banners, setBanners] = useState<IBanner[]>([]);
   const [selectedBanner, setSelectedBanner] = useState<IBanner | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleBannerSelect = (banner: IBanner) => {
     setSelectedBanner(banner);
@@ -84,12 +86,19 @@ const Dashboard: React.FC = () => {
           <BannerForm banner={selectedBanner} onUpdate={handleBannerUpdate} />
         )}
       </div>
-      <div className="mt-10">
-        <h2 className="text-2xl font-bold text-center mb-6">
+      <div className="mt-10 text-center">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 mb-5"
+        >
           Upload New Banner
-        </h2>
-        <BannerForm onUpload={createBanner} />
+        </button>
       </div>
+      {isModalOpen && (
+        <BannerModal onClose={() => setIsModalOpen(false)}>
+          <BannerForm onUpload={createBanner} />
+        </BannerModal>
+      )}
     </div>
   );
 };

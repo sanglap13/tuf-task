@@ -24,7 +24,7 @@ const BannerForm: React.FC<BannerFormProps> = ({
       setDescription(banner.description);
       setLink(banner.link || "");
       setTimer(banner.timer || 6);
-      setVisibility(banner.visibility || true);
+      setVisibility(banner.visibility ?? true); // Use nullish coalescing operator to handle undefined values
     }
   }, [banner]);
 
