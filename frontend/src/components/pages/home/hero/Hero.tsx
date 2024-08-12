@@ -19,7 +19,7 @@ const Hero: React.FC<IHeroProps> = ({
               rel="noopener noreferrer"
             >
               <img
-                src={`${import.meta.env.VITE_BACKEND}/${imageUrl}`}
+                src={imageUrl}
                 alt={description}
                 className="w-full h-full object-cover"
               />

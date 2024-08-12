@@ -70,7 +70,7 @@ const Dashboard: React.FC = () => {
               onClick={() => handleBannerSelect(banner)}
             >
               <img
-                src={`${import.meta.env.VITE_BACKEND}/${banner.imageUrl}`}
+                src={banner.imageUrl}
                 alt={banner.description}
                 className="w-full h-40 object-cover rounded-md"
               />
