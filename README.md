@@ -74,11 +74,33 @@ The frontend is built using React and Vite, providing fast development and hot m
    ```bash
    cd frontend
    ```
-2. Install the required Node packages:
-   ```bash
-    npm install
-   ```
-3. Start the Vite development server:
+2. Rename `.env.example` file to` .env` file and add the necessary things:
+
+```bash
+  VITE_BACKEND=add your backend url
+
+VITE_FIREBASE_KEY=from firebase
+
+VITE_AUTH_DOMAIN=from firebase
+
+VITE_PROJECT_ID=from firebase
+
+VITE_STORAGE_BUCKET=from firebase
+
+VITE_MESSAGING_SENDER_ID=from firebase
+
+VITE_APP_ID=from firebase
+```
+
+Firebase is only used for hosting so you can also remove them if not needed.
+
+3. Install the required Node packages:
+
+```bash
+ npm install
+```
+
+4. Start the Vite development server:
    ```bash
     npm run dev
    ```
