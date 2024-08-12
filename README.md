@@ -10,7 +10,7 @@ A Dynamic One-Page Website with a dashboard which can be used to add new banners
   ## Live Link
 
 - [https://tuf-sanglap.web.app](https://tuf-sanglap.web.app)
-  The backend is deployed on Render's free tier. So it will take 50seconds to load for the 1st time
+- The backend is deployed on Render's free tier. So it will take 50seconds to load for the 1st time
 
 ## Tech Stack
 
