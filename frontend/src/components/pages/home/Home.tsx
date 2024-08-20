@@ -5,6 +5,7 @@ import Hero from "./hero/Hero";
 import Highlights from "./highlights/Highlights";
 import Popular from "./popular/Popular";
 import { getBanners } from "../../../utils/api/api";
+import { Loader } from "../../shared";
 
 const Home: React.FC = () => {
   const [, setBanners] = useState<IBanner[]>([]);
@@ -45,7 +46,12 @@ const Home: React.FC = () => {
     }
   }, [timer, currentIndex, visibleBanners]);
 
-  if (isLoading) return <div className="text-center text-lg">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="text-center text-lg">
+        <Loader />
+      </div>
+    );
 
   return (
     <div>
